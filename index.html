@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-07 11:22:56" itemprop="dateModified" datetime="2023-03-07T11:22:56+08:00">2023-03-07</time>
+                <time title="修改时间：2023-03-07 11:29:02" itemprop="dateModified" datetime="2023-03-07T11:29:02+08:00">2023-03-07</time>
               </span>
 
           
@@ -205,50 +205,15 @@
       
           <h2 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h2><p>Redis的数据是存储在内存中的，读写速度非常快，被广泛应用于缓存方向，<br>Redis存储的是K-V键值对数据。</p>
 <p>Redis内置了多种数据类型：5种基础数据结构（String、List、Set、Hash、Zset），<br>3种特殊数据结构（HyperLogLogs、Bitmap、Geospatial）。</p>
-<h2 id="为什么要使用Redis"><a href="#为什么要使用Redis" class="headerlink" title="为什么要使用Redis"></a>为什么要使用Redis</h2><h3 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h3><p>用户第一次访问数据库中的某些数据的话，这个过程是比较慢，毕竟是从硬盘中读取的。<br>如果户访问的数据属于高频数据并且不会经常改变的话，那么我们就可以很放心地将该用户<br>访问的数据存在缓存中。（可以参考CPU的Cache）毕竟访问内存相对于访问外存可以说非常快。</p>
-<h3 id="高并发"><a href="#高并发" class="headerlink" title="高并发"></a>高并发</h3><p>一般像 MySQL 这类的数据库的 QPS 大概都在 1w 左右（4 核 8g） ，但是使用 Redis 缓存之后很容易达到 10w+，<br>甚至最高能达到 30w+（就单机 Redis 的情况，Redis 集群的话会更高）。</p>
-<blockquote>
-<p>QPS（Query Per Second）：服务器每秒可以执行的查询次数；</p>
-</blockquote>
-<h3 id="Redis除了缓存还能做什么吗"><a href="#Redis除了缓存还能做什么吗" class="headerlink" title="Redis除了缓存还能做什么吗"></a>Redis除了缓存还能做什么吗</h3><ul>
-<li><strong>分布式锁</strong>  Redis 中， <code>SETNX</code> 命令可以帮助我们实现互斥</li>
-<li><strong>限流</strong> 一般通过Redis+Lua脚本实现限流</li>
-<li><strong>消息队列</strong> List数据结构可以实现一个简单的消息队列</li>
-</ul>
-<h2 id="Redis-持久化"><a href="#Redis-持久化" class="headerlink" title="Redis 持久化"></a>Redis 持久化</h2><h3 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h3><p>Redis 可以通过创建快照来获得存储在内存里面的数据在某个时间点上的副本。Redis 创建快照之后，可以对快照进行备份，<br>可以将快照复制到其他服务器从而创建具有相同数据的服务器副本（Redis 主从结构，主要用来提高 Redis 性能），<br>还可以将快照留在原地以便重启服务器的时候使用。</p>
-<p>RDB是Redis默认采用的持久化方式，默认采用<code>bgsave</code>子线程执行，不会阻塞主线程。</p>
-<h3 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h3><p>通过命令<code>appendonly yes</code>开启。<br>开启 AOF 持久化后每执行一条会更改 Redis 中的数据的命令，Redis 就会将该命令写入到内存缓存 server.aof_buf 中，然后再根据 appendfsync 配置来决定何时将其同步到硬盘中的 AOF 文件。</p>
-<blockquote>
-<p>Redis AOF 持久化机制是在执行完命令之后再记录日志。</p>
-</blockquote>
-<h3 id="二者比较"><a href="#二者比较" class="headerlink" title="二者比较"></a>二者比较</h3><p>RDB 文件小，恢复速度快。<br>AOF 数据安全性比更好，支持秒级数据丢失可以导出AOF文件分析。</p>
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>Redis支持事务，具体的执行过程如下</p>
-<ol>
-<li>开始事务（MULTI）；</li>
-<li>输入Redis命令(先进先出的顺序执行)；</li>
-<li>执行事务(EXEC)。</li>
-</ol>
-<p>通过<code>WATCH</code> 命令监听指定的Key,其他客户端执行的事务里面包括了修改这个Key,那么整个事务都不会执行。</p>
-<p><strong>Redis不支持回滚</strong> </p>
-<h2 id="Redis可能遇到的问题"><a href="#Redis可能遇到的问题" class="headerlink" title="Redis可能遇到的问题"></a>Redis可能遇到的问题</h2><h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><p>缓存穿透就是大量请求的 key 是不合理的，根本不存在于缓存中，也不存在于数据库中 。<br>这就导致这些请求直接到了数据库上，根本没有经过缓存这一层，对数据库造成了巨大的压力，可能直接就被这么多请求弄宕机了。<br><strong>解决办法：</strong> </p>
-<ol>
-<li>缓存无效的key</li>
-<li>布隆过滤器（把所有可能的key都放在布隆过滤器，当用户请求过来先判断key是否合法，若合法再去查找Redis，数据库。<br>若不合法则拦截。</li>
-</ol>
-<h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><p>请求的key是热点数据，该数据存在于数据库，但不存在缓存（已过期）</p>
-<ul>
-<li>延长热点数据的国企时间</li>
-<li>针对数据提前预热，提前缓存</li>
-<li>请求数据库写数据到缓存前，先获得互斥锁，保证只有一个请求会落到数据库上，减少数据库压力。</li>
-</ul>
-<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><p>缓存在同一时间大面积的失效，导致大量的请求都直接落到了数据库上，对数据库造成了巨大的压力。<br>这就好比雪崩一样，，数据库的压力可想而知，可能直接就被这么多请求弄宕机了。</p>
-<ul>
-<li>采用Redis集群，避免单机出现问题整个缓存服务器无法使用</li>
-<li>限流避免大量请求</li>
-<li>设置二级缓存</li>
-<li>设置不同的失效时间（避免同时失效）</li>
-</ul>
-
+<h2 id="为什么要使用Redis"><a href="#为什么要使用Redis" class="headerlink" title="为什么要使用Redis?"></a>为什么要使用Redis?</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/05/10-08-47/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
