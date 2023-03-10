@@ -305,6 +305,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hlw8895.github.io/2023/03/04/22-23-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="黄烈涵">
+      <meta itemprop="description" content="描述：记录日常的摸鱼和生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="基于 HEXO 的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/04/22-23-10/" class="post-title-link" itemprop="url">数据库SQL练习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-04 22:23:10" itemprop="dateCreated datePublished" datetime="2023-03-04T22:23:10+08:00">2023-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-10 11:05:18" itemprop="dateModified" datetime="2023-03-10T11:05:18+08:00">2023-03-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <span id="more"></span>
+<h2 id="group-by的一些注意事项"><a href="#group-by的一些注意事项" class="headerlink" title="group by的一些注意事项"></a>group by的一些注意事项</h2><p>使用group by(xxx)后，select后面只能跟（xxx）。<br>一个例外情况就是可以使用min(),max(),count(),sum(),avg(),这样的聚合函数</p>
+<p>group by后面可以再order by count(*);</p>
+<p><strong>举个例子：</strong><br>有如下表：<br><img src="/%E6%95%B0%E6%8D%AE%E5%BA%93SQL%E7%BB%83%E4%B9%A0-1/20230310102110.png"></p>
+<blockquote>
+<p>编写一个SQL查询，为下了 最多订单 的客户查找 customer_number 。<br>测试用例生成后， 恰好有一个客户 比任何其他客户下了更多的订单。</p>
+</blockquote>
+<p><strong>思路：</strong> 可以先按照客户id分组，再按照每个分组的行数（这里的行数等价于下单数）<br>递减排列，使用limit取第一行记录即可。</p>
+<p>完整SQL如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> customer_number</span><br><span class="line"><span class="keyword">from</span> orders </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> customer_number</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">0</span>,<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="根据出生日期查询年龄"><a href="#根据出生日期查询年龄" class="headerlink" title="根据出生日期查询年龄"></a>根据出生日期查询年龄</h2><p>在某次面试的时候遇到时间的处理，只想到一个dateDiff()，这个只能计算天数，<br>特地再次查询了资料解决日期的处理。<br><img src="/%E6%95%B0%E6%8D%AE%E5%BA%93SQL%E7%BB%83%E4%B9%A0-1/20230310104208.png"></p>
+<p>通过查看以上官方文档我们可以写出如下代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> TIMESTAMPDIFF(<span class="keyword">YEAR</span>, birthday，CURDATE()) <span class="keyword">as</span> age</span><br></pre></td></tr></table></figure>
+<p>这里的year可以替换成  MICROSECOND (microseconds), SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, QUARTER, or YEAR.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hlw8895.github.io/2023/02/25/20-45-13/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -721,7 +799,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
