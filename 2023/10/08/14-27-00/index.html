@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hlw8895.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="随机森林-学习前言  最好的学习方法是教会他人        – 费曼学习法   模型本身并没有绝对的好与坏（没有免费午餐定理）  环境搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随机森林-学习">
+<meta property="og:url" content="https://hlw8895.github.io/2023/10/08/14-27-00/index.html">
+<meta property="og:site_name" content="基于 HEXO 的个人博客">
+<meta property="og:description" content="随机森林-学习前言  最好的学习方法是教会他人        – 费曼学习法   模型本身并没有绝对的好与坏（没有免费午餐定理）  环境搭建">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-08T06:27:00.000Z">
+<meta property="article:modified_time" content="2023-10-08T12:29:17.578Z">
+<meta property="article:author" content="黄烈涵">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hlw8895.github.io/2023/10/08/14-27-00/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>随机森林-学习 | 基于 HEXO 的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta custom-logo">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">基于 HEXO 的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">做一件有趣的事</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hlw8895.github.io/2023/10/08/14-27-00/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="黄烈涵">
+      <meta itemprop="description" content="描述：记录日常的摸鱼和生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="基于 HEXO 的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          随机森林-学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-10-08 14:27:00 / 修改时间：20:29:17" itemprop="dateCreated datePublished" datetime="2023-10-08T14:27:00+08:00">2023-10-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="随机森林-学习"><a href="#随机森林-学习" class="headerlink" title="随机森林-学习"></a>随机森林-学习</h1><p><strong>前言</strong></p>
+<blockquote>
+<p>最好的学习方法是教会他人<br>        – 费曼学习法</p>
+</blockquote>
+<blockquote>
+<p>模型本身并没有绝对的好与坏（没有免费午餐定理）</p>
+</blockquote>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><span id="more"></span>
+<p>机器学习的一大拦路虎就是环境搭建了，这也是阻碍小白学习的一大拦路虎（我说我自己），笔者每次从装 <code>Anaconda</code> 到 <code>TensorFlow</code>， 然后实际跑起来就得调试很久，大多数问题是国内网络问题，依赖冲突之类。</p>
+<p>建议使用 <code>Anaconda</code> 创建 <code>python</code> 虚拟环境进行允许，避免不同环境之间的版本冲突造成的问题。</p>
+<p>这里记录一下安装后创建虚拟环境的方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">conda env list  # 查看本机已有的虚拟环境</span><br><span class="line"></span><br><span class="line">conda create -n randomf python=3.10 #创建名为&quot;randomf&quot;的虚拟环境</span><br><span class="line"></span><br><span class="line">conda activate randomf  # 激活指定的虚拟环境，建议在Prompt中运行</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在激活的randomf环境中安装一些必要的包</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">我们需要使用sk-learn的工具来使用随机森林</span></span><br><span class="line"></span><br><span class="line">conda install sklearn</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="理论介绍"><a href="#理论介绍" class="headerlink" title="理论介绍"></a>理论介绍</h2><h3 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h3><p>（看了半天，发现讲不太明白，总之理解一点，模型简单，容易过拟合</p>
+<h3 id="随机-森林"><a href="#随机-森林" class="headerlink" title="随机  森林"></a>随机  森林</h3><ul>
+<li>随机性的引入降低了过拟合风险​</li>
+<li>树的组合可以让随机森林处理非线性数据</li>
+<li>适合特征离散，取值有限的情况</li>
+</ul>
+<h3 id="数据集介绍"><a href="#数据集介绍" class="headerlink" title="数据集介绍"></a>数据集介绍</h3><p> 使用 <code>Scikit-Learn</code> 库构建随机森林分类器，为此，我们使用 <code>IRIS</code> (鸢尾花)数据集，这是一个非常常见且著名的数据集。随机森林或随机决策森林是一种监督机器学习算法，用于使用决策树进行分类、回归和其他任务。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>下面直接上正菜， <strong>代码实现</strong></p>
+<p>sklearn 上面的例子包，包括分类和回归</p>
+<p>先说分类<strong>random forest classifier</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">conda install -c conda-forge scikit-learn 安装最新的sklearn</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="加载数据集"><a href="#加载数据集" class="headerlink" title="加载数据集"></a>加载数据集</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets   </span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split </span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier </span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics  <span class="comment"># metrics are used to find accuracy or error </span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line">iris = datasets.load_iris() <span class="comment"># 加载数据集</span></span><br><span class="line"><span class="built_in">print</span>(iris.target_names) </span><br><span class="line"><span class="built_in">print</span>(iris.feature_names)</span><br><span class="line"></span><br><span class="line">X, y = datasets.load_iris( return_X_y = <span class="literal">True</span>) <span class="comment"># X 是输入特征，y是标签</span></span><br><span class="line"><span class="comment"># i.e. 70 % training dataset and 30 % test datasets </span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = <span class="number">0.30</span>) </span><br><span class="line"><span class="comment"># creating dataframe of IRIS dataset </span></span><br><span class="line">data = pd.DataFrame(&#123;‘sepallength’: iris.data[:, <span class="number">0</span>],</span><br><span class="line">                     ’sepalwidth’: iris.data[:, <span class="number">1</span>], </span><br><span class="line">                     ’petallength’: iris.data[:, <span class="number">2</span>], </span><br><span class="line">                     ’petalwidth’: iris.data[:, <span class="number">3</span>], </span><br><span class="line">                     ’species’: iris.target&#125;) </span><br><span class="line"></span><br><span class="line"><span class="comment">#sepallength 列：该列使用 iris.data 中的第一列数据，即鸢尾花的萼片长度（sepal length）。</span></span><br><span class="line"><span class="comment">#sepalwidth 列：该列使用 iris.data 中的第二列数据，即鸢尾花的萼片宽度（sepal width）。</span></span><br><span class="line"><span class="comment">#petallength 列：该列使用 iris.data 中的第三列数据，即鸢尾花的花瓣长度（petal length）。</span></span><br><span class="line"><span class="comment">#petalwidth 列：该列使用 iris.data 中的第四列数据，即鸢尾花的花瓣宽度（petal width）。</span></span><br><span class="line"><span class="comment">#species 列：该列使用 iris.target 中的数据，表示鸢尾花的类别（species）。</span></span><br><span class="line"><span class="comment">#iris.target 是鸢尾花数据集中的目标向量，其中不同的数字对应不同的鸢尾花类别。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(data.head()) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">clf = RandomForestClassifier(n_estimators = <span class="number">100</span>)   <span class="comment"># 创建随机森林分类器</span></span><br><span class="line"></span><br><span class="line">clf.fit(X_train, y_train) <span class="comment"># 使用训练数据集训练模型</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;训练结束&quot;</span>) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">y_pred = clf.predict(X_test)  预测测试数据集</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;模型的准确率ACCURACY : &quot;</span>, metrics.accuracy_score(y_test, y_pred)) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="超参数调节"><a href="#超参数调节" class="headerlink" title="超参数调节"></a>超参数调节</h3><blockquote>
+<p>超参数 是指模型中需要人手动调节的参数</p>
+</blockquote>
+<p><strong>特征较少，数据集较少</strong>此时若模型过于复杂会产生过拟合现象<br><strong>特征较多，数据集庞大</strong>模型简单会产生欠拟合现象</p>
+<p>我们应该避免发生以上两种情况，使模型具有更好的泛化能力</p>
+<p>这里可以调节的超参数包括</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">RandomForestClassifier(n_estimators=<span class="number">100</span>, <span class="comment"># 数目的数量</span></span><br><span class="line">*,           </span><br><span class="line">criterion=<span class="string">&#x27;gini&#x27;</span>,  <span class="comment"># &#123;“gini”, “entropy”, “log_loss”&#125;  衡量分割质量的函数</span></span><br><span class="line"> max_depth=<span class="literal">None</span>,  <span class="comment">#  树的最大深度</span></span><br><span class="line"> min_samples_split=<span class="number">2</span>, <span class="comment"># 分裂内部节点所需的最小样本数</span></span><br><span class="line">  min_samples_leaf=<span class="number">1</span>, </span><br><span class="line">  min_weight_fraction_leaf=<span class="number">0.0</span>, </span><br><span class="line">  max_features=<span class="string">&#x27;sqrt&#x27;</span>, </span><br><span class="line">  max_leaf_nodes=<span class="literal">None</span>, </span><br><span class="line">  min_impurity_decrease=<span class="number">0.0</span>, </span><br><span class="line">  bootstrap=<span class="literal">True</span>, </span><br><span class="line">  oob_score=<span class="literal">False</span>, </span><br><span class="line">  n_jobs=<span class="literal">None</span>,</span><br><span class="line">  random_state=<span class="literal">None</span>, </span><br><span class="line">  verbose=<span class="number">0</span>, </span><br><span class="line">  warm_start=<span class="literal">False</span>,</span><br><span class="line">  class_weight=<span class="literal">None</span>, </span><br><span class="line">  ccp_alpha=<span class="number">0.0</span>, </span><br><span class="line">  max_samples=<span class="literal">None</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line">X, y = make_classification(n_samples=<span class="number">1000</span>, <span class="comment">#样本数量</span></span><br><span class="line">                           n_features=<span class="number">4</span>,  <span class="comment">#特征数量</span></span><br><span class="line">                           n_informative=<span class="number">2</span>,  <span class="comment">#有效特征数量</span></span><br><span class="line">                           n_redundant=<span class="number">0</span>,   <span class="comment"># 冗余特征的数量</span></span><br><span class="line">                           random_state=<span class="number">0</span>, <span class="comment">#随机数种子，指定后每次运行生成的 X, y 都是相同的</span></span><br><span class="line">                           shuffle=<span class="literal">False</span>) <span class="comment"># 乱序设置为 flase </span></span><br><span class="line">clf = RandomForestClassifier(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>) // 最大深度为<span class="number">2</span></span><br><span class="line">clf.fit(X, y) </span><br><span class="line"><span class="built_in">print</span>(clf.predict([[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>炼丹开始<br>嘀嗒嘀嗒嘀嗒嘀嗒<br>时针它不停在转动<br>嘀嗒嘀嗒嘀嗒嘀嗒<br>小雨她拍打着水花</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#examples-using-sklearn-ensemble-randomforestclassifier">sk-learn   随机森林 https://scikit-learn.org/ </a></p>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/random-forest-classifier-using-scikit-learn/">geeksforgeeks https://www.geeksforgeeks.org </a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>黄烈涵
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://hlw8895.github.io/2023/10/08/14-27-00/" title="随机森林-学习">https://hlw8895.github.io/2023/10/08/14-27-00/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/07/19-34-13/" rel="prev" title="力扣-46.全排列">
+      <i class="fa fa-chevron-left"></i> 力扣-46.全排列
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97-%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">随机森林-学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.</span> <span class="nav-text">理论介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">1.2.1.</span> <span class="nav-text">决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA-%E6%A3%AE%E6%9E%97"><span class="nav-number">1.2.2.</span> <span class="nav-text">随机  森林</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.3.</span> <span class="nav-text">数据集介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">加载数据集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83"><span class="nav-number">1.3.2.</span> <span class="nav-text">训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E5%8F%82%E6%95%B0%E8%B0%83%E8%8A%82"><span class="nav-number">1.3.4.</span> <span class="nav-text">超参数调节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.4.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">黄烈涵</p>
+  <div class="site-description" itemprop="description">描述：记录日常的摸鱼和生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄烈涵</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
